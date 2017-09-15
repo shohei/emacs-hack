@@ -150,8 +150,17 @@
  '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(package-selected-packages
    (quote
-    (shell-pop w3m igrep migemo recentf-ext elixir-mode plantuml-mode ace-window dired-details dired-subtree auto-install zlc zenburn-theme yascroll yaml-mode web-mode volatile-highlights undohist swift-mode solarized-theme smooth-scroll smex smartparens smart-compile slime sequential-command scala-mode2 request rainbow-delimiters railscasts-theme projectile powerline point-undo php-mode pdf-tools paredit monokai-theme markdown-mode magit js2-mode inf-ruby ido-ubiquitous hlinum helm hc-zenburn-theme haskell-mode gitconfig-mode git-gutter-fringe git gist flycheck expand-region exec-path-from-shell evil elisp-slime-nav dired+ diminish ctable color-theme clojure-mode-extra-font-locking cider auto-complete anzu ace-jump-mode)))
+    (meghanada yasnippet-snippets ensime shell-pop w3m igrep migemo recentf-ext elixir-mode plantuml-mode ace-window dired-details dired-subtree auto-install zlc zenburn-theme yascroll yaml-mode web-mode volatile-highlights undohist swift-mode solarized-theme smooth-scroll smex smartparens smart-compile slime sequential-command scala-mode2 request rainbow-delimiters railscasts-theme projectile powerline point-undo php-mode pdf-tools paredit monokai-theme markdown-mode magit js2-mode inf-ruby ido-ubiquitous hlinum helm hc-zenburn-theme haskell-mode gitconfig-mode git-gutter-fringe git gist flycheck expand-region exec-path-from-shell evil elisp-slime-nav dired+ diminish ctable color-theme clojure-mode-extra-font-locking cider auto-complete anzu ace-jump-mode)))
  '(send-mail-function (quote smtpmail-send-it))
+ '(shell-pop-shell-type
+   (quote
+    ("ansi-term" "*shell-pop-ansi-term*"
+     (lambda nil
+       (ansi-term shell-pop-term-shell)))))
+ '(shell-pop-term-shell "/bin/zsh")
+ '(shell-pop-universal-key "C-M-t")
+ '(shell-pop-window-position "bottom")
+ '(shell-pop-window-size 20)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 587))
 (custom-set-faces
@@ -309,16 +318,7 @@
 (add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
 
 (require 'shell-pop)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(shell-pop-shell-type (quote ("ansi-term" "*shell-pop-ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
- '(shell-pop-term-shell "/bin/zsh")
- '(shell-pop-universal-key "C-M-t")
- '(shell-pop-window-height 20)
- '(shell-pop-window-position "bottom"))
+
 
 (require 'shell-history)
 
@@ -340,4 +340,15 @@
 	("M-," . term-send-input)
 	("M-." . comint-dynamic-complete)))
 
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
+
+(require 'meghanada)
+(add-hook 'java-mode-hook
+          (lambda ()
+            ;; meghanada-mode on
+            (meghanada-mode t)
+            (setq c-basic-offset 2)
+            ;; use code format
+            (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
